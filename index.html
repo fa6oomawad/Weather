@@ -11,6 +11,28 @@
 </head>
 <body>
     <div id='app'></div>
+<script>
+
+window.API={
+    fetchWeatherData(lon,lat){
+        const encodedURI=encodeURI(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}
+`)
+return fetch(encodedURI)
+.then((data)=> data.json())
+.then((repos)=>repos.weather)
+.catch((error) => {
+            console.warn(error)
+            return null
+          });
+    }
+}
+
+
+
+
+
+
+</script>
 
     <script type='text/babel'>
 function WeatherBox (props){
@@ -28,7 +50,7 @@ constructor(props){
     super(props);
 this.state={
     days:['sat','sun','mon',"tues","wen"],
-    lang:'',
+    lon:'',
     lat:''
 }
 
@@ -43,11 +65,15 @@ componentDidMount(){
           navigator.geolocation.getCurrentPosition((position)=> {
           console.log(position.coords.longitude);
            this.setState({
-               lang:position.coords.longitude,
+               lon:position.coords.longitude,
                lat:position.coords.latitude
            })
 
             })
+
+ window.API.fetchWeatherData(this.state.lon,this.state.lat).then((data)=>{
+     console.log(data);
+ })         
 
   
 }}
