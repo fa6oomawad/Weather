@@ -15,11 +15,10 @@
 
 window.API={
     fetchWeatherData(lon,lat){
-        const encodedURI=encodeURI(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}
-`)
+        const encodedURI=encodeURI(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=5b98059678584b0f9387964f206a09d5`)
 return fetch(encodedURI)
 .then((data)=> data.json())
-.then((repos)=>repos.weather)
+.then((repos)=>repos.list)
 .catch((error) => {
             console.warn(error)
             return null
@@ -64,6 +63,8 @@ componentDidMount(){
     if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position)=> {
           console.log(position.coords.longitude);
+          console.log(position.coords.latitude);
+
            this.setState({
                lon:position.coords.longitude,
                lat:position.coords.latitude
@@ -71,12 +72,17 @@ componentDidMount(){
 
             })
 
- window.API.fetchWeatherData(this.state.lon,this.state.lat).then((data)=>{
-     console.log(data);
- })         
+
 
   
 }}
+
+componentDidUpdate(){
+    window.API.fetchWeatherData(this.state.lon,this.state.lat).then((data)=>{
+     console.log('mm');
+     console.log(data);
+ })         
+}
 
 
 render(){
