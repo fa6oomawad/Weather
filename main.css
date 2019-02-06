@@ -1,18 +1,50 @@
+@font-face{
+    font-family:chunki;
+    src:url(Chunkfive.otf);
+}
+
 body{
     margin:0;
     padding:0;
-    background:rgb(139, 179, 143);
+    background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(1.jpg)  center no-repeat;
+    background-size: cover;
+	min-height: 100vh;
+
+
 }
 .box {
     position: absolute;
-    top:50%;
-    left:45%;
-    transform: translate(-50%,-50%);
+    top:55%;
+    left:44%;
+    transform: translate(-42%,-50%);
+}
+
+ h3 {
+    font-family: 'chunki';
+    color:rgba(255, 255, 255, 0.863);
+   text-align: left;
+    font-size:30px;
+    letter-spacing: 3px;
+    margin-top:10%;
+    margin-left: 10px;
+    display: inline;
+
+}
+
+h4{
+    color:rgba(255, 255, 255, 0.863);
+   text-align: right;
+    font-size:20px;
+    letter-spacing: 3px;
+    margin-top:0px;
+    margin-left:65%;
+display: inline;
+    border-bottom: 3px solid white;
 }
 .weatherbox {
 width:100px;
 height: 100px;
-background: white;
+background: rgba(255, 255, 255, 0.705);
 color:rgb(78, 78, 78);
 display: inline-block;
 margin:20px;
@@ -32,6 +64,7 @@ position: relative;
 }
 .weatherbox span {
     font-weight: bold;
+    color:black;
     display: block;
     position: absolute;
 top:80%;

@@ -41,6 +41,13 @@ function WeatherBox (props){
 
 
     return (
+        <div>
+        <div>
+                <h3>YOUR <br/> WEATHER</h3>
+                <h4 id="timer">{props.date()}</h4>
+               
+                </div>
+
 <div className='box'>
 {props.dat.map(({main,dt,weather})=>(
     <div key={dt} className='weatherbox'>
@@ -50,6 +57,7 @@ function WeatherBox (props){
 
     </div>
 ))}
+</div>
 </div>
     )
     
@@ -67,6 +75,7 @@ this.state={
 }
 this.fetchWeather=this.fetchWeather.bind(this);
 this.renderswitch=this.renderswitch.bind(this);
+this.displayDate=this.displayDate.bind(this);
 }
     
 componentDidMount(){
@@ -74,7 +83,7 @@ componentDidMount(){
           navigator.geolocation.getCurrentPosition((position)=> {
           console.log(position.coords.longitude);
           console.log(position.coords.latitude);
-
+console.log()
            this.setState({
                lon:position.coords.longitude,
                lat:position.coords.latitude
@@ -83,7 +92,10 @@ componentDidMount(){
             })
 }}
 
-
+displayDate(){
+    var d = new Date();
+  return d.toLocaleString();
+}
 
 
 renderswitch(weatherMain){
@@ -122,7 +134,7 @@ componentDidUpdate (prevProps, prevState) {
 render(){
     return (
 <div>
-<WeatherBox dat={this.state.dat}  switch={this.renderswitch}/>
+<WeatherBox dat={this.state.dat}  switch={this.renderswitch} date={this.displayDate}/>
 </div>
 
 
