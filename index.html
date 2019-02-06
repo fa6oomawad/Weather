@@ -7,7 +7,7 @@
     <script  src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script  src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
 </head>
 <body>
     <div id='app'></div>
@@ -15,10 +15,10 @@
 
 window.API={
     fetchWeatherData(lon,lat){
-        const encodedURI=encodeURI(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=5b98059678584b0f9387964f206a09d5`)
+        const encodedURI=encodeURI(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=5&appid=5b98059678584b0f9387964f206a09d5`)
 return fetch(encodedURI)
 .then((data)=> data.json())
-.then((repos)=>repos.list)
+.then((repos)=>repos)
 .catch((error) => {
             console.warn(error)
             return null
@@ -35,13 +35,24 @@ return fetch(encodedURI)
 
     <script type='text/babel'>
 function WeatherBox (props){
+
+    
+
+
+
     return (
 <div className='box'>
-{props.day.map((day)=>(
-    <div key={day} className='weatherbox'>{day}</div>
+{props.dat.map(({main,dt,weather})=>(
+    <div key={dt} className='weatherbox'>
+  
+   <i className={`wi wi-day-${props.switch(weather[0].main)}`}></i>
+   <span> {Math.floor(main.temp-273.15)}°</span>
+
+    </div>
 ))}
 </div>
     )
+    
 }
 
 class App extends React.Component {
@@ -50,15 +61,14 @@ constructor(props){
 this.state={
     days:['sat','sun','mon',"tues","wen"],
     lon:'',
-    lat:''
+    lat:'',
+    date:'',
+    dat:[]
 }
-
+this.fetchWeather=this.fetchWeather.bind(this);
+this.renderswitch=this.renderswitch.bind(this);
 }
-
-
- 
-
-     
+    
 componentDidMount(){
     if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position)=> {
@@ -71,24 +81,48 @@ componentDidMount(){
            })
 
             })
-
-
-
-  
 }}
 
-componentDidUpdate(){
-    window.API.fetchWeatherData(this.state.lon,this.state.lat).then((data)=>{
+
+
+
+renderswitch(weatherMain){
+        switch (weatherMain) {
+       case 'Rain':
+       return 'rain';
+           break;
+           default:
+           return 'sunny'
+   
+   }
+    }
+
+fetchWeather(lon,lat){
+    window.API.fetchWeatherData(lon,lat).then((data)=>{
      console.log('mm');
-     console.log(data);
- })         
+     this.setState({
+    dat:data.list
+})
+
+ })
 }
+
+
+
+componentDidUpdate (prevProps, prevState) {
+        if (prevState.lat !== this.state.lat) {
+          this.fetchWeather(this.state.lon,this.state.lat)
+         
+        }
+        console.log("ola comsta" , this.state.dat)
+
+      }
 
 
 render(){
     return (
 <div>
-<WeatherBox day={this.state.days} />
+<WeatherBox dat={this.state.dat}  switch={this.renderswitch}/>
 </div>
 
 

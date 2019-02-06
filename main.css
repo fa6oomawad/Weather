@@ -18,5 +18,22 @@ display: inline-block;
 margin:20px;
 border:2px solid white;
 border-radius: 5px;
+position: relative;
 
+
+}
+
+.weatherbox i {
+    color:black;
+    font-size:40px;
+    position: absolute;
+    top:30px;
+    left:30%;
+}
+.weatherbox span {
+    font-weight: bold;
+    display: block;
+    position: absolute;
+top:80%;
+left:3px;
 }
