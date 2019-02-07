@@ -43,17 +43,18 @@ function WeatherBox (props){
     return (
         <div>
         <div>
-                <h3>YOUR <br/> WEATHER</h3>
+                <h3>DAILY <br/> WEATHER</h3>
                 <h4 id="timer">{props.date()}</h4>
                
                 </div>
 
 <div className='box'>
-{props.dat.map(({main,dt,weather})=>(
+{props.dat.map(({main,dt,weather,dt_txt})=>(
     <div key={dt} className='weatherbox'>
+            <h4 id='time'> {dt_txt.substr(12,4)}</h4>
+   <i className={`wi wi-${props.switch(weather[0].main)}`}></i>
+   <span > {Math.floor(main.temp-273.15)}°</span>
   
-   <i className={`wi wi-day-${props.switch(weather[0].main)}`}></i>
-   <span> {Math.floor(main.temp-273.15)}°</span>
 
     </div>
 ))}
@@ -101,8 +102,21 @@ displayDate(){
 renderswitch(weatherMain){
         switch (weatherMain) {
        case 'Rain':
-       return 'rain';
-           break;
+        return 'rain';
+        break;
+
+       case 'Cloud':
+        return 'cloudy'
+       break;
+       
+       case 'Clear':
+        return 'cloud'
+       break;
+
+       case 'Snow':
+        return 'snow'
+       break;
+
            default:
            return 'sunny'
    
