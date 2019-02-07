@@ -8,6 +8,7 @@
   <script  src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 <body>
     <div id='app'></div>
@@ -43,11 +44,12 @@ function WeatherBox (props){
     return (
         <div>
         <div>
-                <h3>DAILY <br/> WEATHER</h3>
+                <h3><i class="wi wi-thermometer"></i>DAILY <br/> WEATHER</h3>
                 <h4 id="timer">{props.date()}</h4>
                
                 </div>
 
+<p id="location"><i class="fas fa-map-marker-alt"></i>{props.location}</p>
 <div className='box'>
 {props.dat.map(({main,dt,weather,dt_txt})=>(
     <div key={dt} className='weatherbox'>
@@ -72,7 +74,8 @@ this.state={
     lon:'',
     lat:'',
     date:'',
-    dat:[]
+    dat:[],
+    location:''
 }
 this.fetchWeather=this.fetchWeather.bind(this);
 this.renderswitch=this.renderswitch.bind(this);
@@ -108,7 +111,7 @@ renderswitch(weatherMain){
        case 'Cloud':
         return 'cloudy'
        break;
-       
+
        case 'Clear':
         return 'cloud'
        break;
@@ -127,7 +130,8 @@ fetchWeather(lon,lat){
     window.API.fetchWeatherData(lon,lat).then((data)=>{
      console.log('mm');
      this.setState({
-    dat:data.list
+    dat:data.list,
+    location:data.city.name
 })
 
  })
@@ -148,7 +152,7 @@ componentDidUpdate (prevProps, prevState) {
 render(){
     return (
 <div>
-<WeatherBox dat={this.state.dat}  switch={this.renderswitch} date={this.displayDate}/>
+<WeatherBox dat={this.state.dat}  switch={this.renderswitch} date={this.displayDate} location={this.state.location}/>
 </div>
 
 
