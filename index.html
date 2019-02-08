@@ -37,14 +37,10 @@ return fetch(encodedURI)
     <script type='text/babel'>
 function WeatherBox (props){
 
-    
-
-
-
     return (
         <div>
         <div>
-                <h3><i class="wi wi-thermometer"></i>DAILY <br/> WEATHER</h3>
+                <h3><i className="wi wi-thermometer"></i>DAILY <br/> WEATHER</h3>
                 <h4 id="timer">{props.date()}</h4>
                
                 </div>
@@ -115,6 +111,11 @@ renderswitch(weatherMain){
        case 'Clear':
         return 'cloud'
        break;
+
+       case "overcast clouds":
+       return 'cloudy'
+       break;
+
 
        case 'Snow':
         return 'snow'
