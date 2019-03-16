@@ -41,7 +41,8 @@ function WeatherBox (props){
         <div>
         <div>
                 <h3><i className="wi wi-thermometer"></i>DAILY <br/> WEATHER</h3>
-                <h4 id="timer">{props.date()}</h4>
+                <h4 id="timer">{props.daydate} { props.date }
+</h4>
                
                 </div>
 
@@ -69,7 +70,8 @@ this.state={
     days:['sat','sun','mon',"tues","wen"],
     lon:'',
     lat:'',
-    date:'',
+    date:'' ,
+    daydate:'',
     dat:[],
     location:''
 }
@@ -79,22 +81,48 @@ this.displayDate=this.displayDate.bind(this);
 }
     
 componentDidMount(){
+    this.displayDate();
     if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position)=> {
           console.log(position.coords.longitude);
           console.log(position.coords.latitude);
-console.log()
            this.setState({
                lon:position.coords.longitude,
                lat:position.coords.latitude
            })
 
             })
-}}
+}
+
+}
+
+componentDidUpdate (prevProps, prevState) {
+        if (prevState.lat !== this.state.lat) {
+          this.fetchWeather(this.state.lon,this.state.lat)
+         
+        }
+
+      }
+ 
+componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
 displayDate(){
-    var d = new Date();
-  return d.toLocaleString();
+    let day = new Date().toISOString().slice(0, 10);
+this.setState({daydate:day});
+ this.interval= setInterval(() => { 
+    var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+    console.log(`${h}:${m}:${s}`)
+    this.setState({
+        date:`${h}:${m}:${s}`
+    });
+    }, 1000);
+  
+
 }
 
 
@@ -116,20 +144,28 @@ renderswitch(weatherMain){
        return 'cloudy'
        break;
 
+       case "Clouds":
+       return 'cloudy'
+       break;
+
+
+
 
        case 'Snow':
         return 'snow'
        break;
-
+case 'Sunny':
+return 'sunny'
+break;
            default:
            return 'sunny'
+           break;
    
    }
     }
 
 fetchWeather(lon,lat){
     window.API.fetchWeatherData(lon,lat).then((data)=>{
-     console.log('mm');
      this.setState({
     dat:data.list,
     location:data.city.name
@@ -140,20 +176,13 @@ fetchWeather(lon,lat){
 
 
 
-componentDidUpdate (prevProps, prevState) {
-        if (prevState.lat !== this.state.lat) {
-          this.fetchWeather(this.state.lon,this.state.lat)
-         
-        }
-        console.log("ola comsta" , this.state.dat)
 
-      }
 
 
 render(){
     return (
 <div>
-<WeatherBox dat={this.state.dat}  switch={this.renderswitch} date={this.displayDate} location={this.state.location}/>
+<WeatherBox dat={this.state.dat}  switch={this.renderswitch} daydate={this.state.daydate} date={this.state.date} location={this.state.location}/>
 </div>
 
 
